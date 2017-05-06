@@ -32,6 +32,10 @@ def load_retrieval_result():
 	del indexR[0]
 	return ResultQ, ResultR, indexQ, indexR
 
+def get_basename(s):
+	 num = re.search('(\d+)(?=(\.png|\.jpg))', s).group(1)
+	 return num
+
 def get_file_name(s):
 	 num = re.search('(\d+)(?=(\.png|\.jpg))', s).group(1)
 	 return num + '.png'
@@ -42,7 +46,7 @@ def read_EHD():
 		for curLine in f.readlines():
 			filename = curLine.strip().split(' ')[0]
 			filename = get_file_name(filename)
-			filename = re.search('(\d+)(?=(\.png|\.jpg))', filename).group(1)
+			filename = get_basename(filename)
 			ehd[filename] = list(map(int, curLine.split(' ')[1:]))
 	return ehd
 
@@ -51,7 +55,7 @@ if __name__ == '__main__':
 	if len(sys.argv) < 2:
 		print('error : please input the EHD file')
 		exit(1)
-			
+
 	ehd = read_EHD()
 
 	# name : 1000.png, result : ../IRMA/../../../1000.png
