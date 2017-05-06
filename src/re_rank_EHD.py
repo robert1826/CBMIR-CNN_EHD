@@ -37,6 +37,7 @@ def get_file_name(s):
 	 return num + '.png'
 
 if __name__ == '__main__':
+	# name : 1000.png, result : ../IRMA/../../../1000.png
 	desc, labels, names = load_descriptor('train_dataset.txt_desc')
 	t_desc, t_labels,t_names = load_descriptor('test_dataset.txt_desc')
 	ResultQ, ResultR, indexQ, indexR = load_retrieval_result()
