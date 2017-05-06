@@ -36,7 +36,24 @@ def get_file_name(s):
 	 num = re.search('(\d+)(?=(\.png|\.jpg))', s).group(1)
 	 return num + '.png'
 
+def read_EHD():
+	ehd = {}
+	with open(sys.argv[1], 'r') as f:
+		for curLine in f.readlines():
+			filename = curLine.strip().split(' ')[0]
+			filename = get_file_name(filename)
+			filename = re.search('(\d+)(?=(\.png|\.jpg))', filename).group(1)
+			ehd[filename] = list(map(int, curLine.split(' ')[1:]))
+	return ehd
+
+
 if __name__ == '__main__':
+	if len(sys.argv) < 2:
+		print('error : please input the EHD file')
+		exit(1)
+			
+	ehd = read_EHD()
+
 	# name : 1000.png, result : ../IRMA/../../../1000.png
 	desc, labels, names = load_descriptor('train_dataset.txt_desc')
 	t_desc, t_labels,t_names = load_descriptor('test_dataset.txt_desc')
