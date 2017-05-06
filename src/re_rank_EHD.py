@@ -65,3 +65,8 @@ if __name__ == '__main__':
 		# print(t_labels[i], relevance_score)
 
 		# now use the classes that was obtained by the 'relevance score' & EHD to refine the result
+		useful_classes = map(lambda x : x[0], relevance_score)
+		useful_classes = list(useful_classes)
+		useful_classes = set(useful_classes)
+		
+		useful_images = [j for j in indexR[i] if labels[j] in useful_classes]
