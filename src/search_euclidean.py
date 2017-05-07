@@ -107,17 +107,18 @@ if __name__ == "__main__":
 		# print(ResultR)
 		# print(indexQ)
 		# print(indexR)
-		if(t!=0 and t%25 == 0):
-			f = open("retrieval_result_fc7", 'wb')
-			save = {
-			    'query': ResultQ,
-			   	'result': ResultR, 
-			   	'query_index': indexQ,
-			   	'result_index': indexR
-			}
-			pickle.dump(save, f, pickle.HIGHEST_PROTOCOL)
-			f.close()
-			print("saved file")
+		
+		# if(t!=0 and t%25 == 0):
+		# 	f = open("retrieval_result_fc7", 'wb')
+		# 	save = {
+		# 	    'query': ResultQ,
+		# 	   	'result': ResultR, 
+		# 	   	'query_index': indexQ,
+		# 	   	'result_index': indexR
+		# 	}
+		# 	pickle.dump(save, f, pickle.HIGHEST_PROTOCOL)
+		# 	f.close()
+		# 	print("saved file")
 
 	print('[Mean Accuracy]', sum(eval_res) / len(eval_res))
 	f = open("retrieval_result_fc7", 'wb')
