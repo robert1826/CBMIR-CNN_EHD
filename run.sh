@@ -70,5 +70,5 @@ mv retrieval_result_fc7 ../generated_files -f
 # clean mpeg dir
 cd ../mpeg7fexlin/
 rm *dataset*
-rm -r convert_dir
+mv convert_dir ../generated_files
 mv ehd_out.txt ../generated_files
