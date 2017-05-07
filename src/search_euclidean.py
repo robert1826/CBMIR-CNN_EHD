@@ -57,7 +57,7 @@ if __name__ == "__main__":
 	ResultR=[[]]
 	indexR=[[]]
 	# for t in range(500):
-	for t in range(min(500, len(t_desc))):
+	for t in range(len(t_desc)):
 		test_img = t_desc[t]
 		test_num += 1
 		retrievals = []
