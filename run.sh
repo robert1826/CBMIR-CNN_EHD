@@ -30,7 +30,7 @@ echo ''
 cd ../mpeg7fexlin/
 
 echo 'Getting dataset lists'
-cp ../src/*dataset* .
+cp ../src/*dataset*txt .
 echo 'done'
 echo ''
 
