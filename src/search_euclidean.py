@@ -42,7 +42,7 @@ if __name__ == "__main__":
 	t_desc, t_labels,t_names = load_data(sys.argv[2])
 
 	eval_res = []
-	top_n = 20
+	top_n = 100
 	### for visualization
 	dst_root = 'Retrieval'
 	shutil.rmtree(dst_root, True)
