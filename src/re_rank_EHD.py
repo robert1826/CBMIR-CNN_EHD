@@ -109,7 +109,7 @@ if __name__ == '__main__':
 		# now calculating the accuracy of the top 20 retrievals
 		ehd_retrieval = ehd_retrieval[:20]
 		correct = sum([1 for j in ehd_retrieval if labels[j] == t_labels[i]])
-		eval_res += [correct / 20]
+		eval_res += [correct / len(ehd_retrieval)]
 		print('[EHD Current Accuracy] {} is {}'.format(i, correct / 20))
 
 	print('[EHD Mean Accuracy] is', sum(eval_res) / len(eval_res))
