@@ -70,7 +70,8 @@ if __name__ == '__main__':
 	t_desc, t_labels,t_names = load_descriptor('test_dataset.txt_desc')
 	ResultQ, ResultR, indexQ, indexR = load_retrieval_result()
 
-	eval_res = []
+	# all_retrievals[i] = list of sorted retrievals for test img i
+	all_retrievals = {}
 
 	for i in indexQ:
 		relevance_score = {}
@@ -106,11 +107,26 @@ if __name__ == '__main__':
 		ehd_retrieval = sorted(useful_images, key=lambda x: -distance(ehd[get_basename(names[x])], ehd[get_basename(t_names[i])]))
 		# print(ehd_retrieval)
 
-		# now calculating the accuracy of the top 20 retrievals
-		ehd_retrieval = ehd_retrieval[:20]
-		correct = sum([1 for j in ehd_retrieval if labels[j] == t_labels[i]])
-		eval_res += [correct / len(ehd_retrieval)]
-		print('[EHD Current Accuracy] {} is {}'.format(i, correct / 20))
+		all_retrievals[i] = ehd_retrieval
+	
+	# evaluation using ANMRR
+	max_Nj = -1
+	for i in all_retrievals.keys():
+		cur = sum([1 for j in all_retrievals[i] if t_labels[i] == labels[j]])
+		max_Nj = max(max_Nj, cur)
 
-	print('[EHD Mean Accuracy] is', sum(eval_res) / len(eval_res))
+	ANMRR = 0
+	for i in all_retrievals.keys():
+		Ni = sum([1 for j in labels if j == t_labels[i]])
+		matches = [(j + 1) for j in range(len(all_retrievals[i])) if labels[all_retrievals[i][j]] == t_labels[i]]
 		
+		avg = sum(matches) + (Ni - len(matches)) * 21
+		avg /= Ni 
+
+		MRR = avg - 0.5 - Ni / 2
+		Ki = min(4 * Ni, 2 * max_Nj)
+		NMRR = MRR / (Ki + 0.5 - 0.5 * Ni)
+		ANMRR += NMRR
+	ANMRR /= len(t_desc)
+
+	print('[ANMRR] is', ANMRR)
