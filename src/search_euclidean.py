@@ -78,7 +78,7 @@ if __name__ == "__main__":
 		# print('[names]', [names[u[1]] for u in retrievals])
 		# print('[labels]', correct, [labels[i[1]] for i in retrievals])
 		# print()
-		print('(', t, '/ 500)', "==>", correct / top_n, "==>", sum(eval_res) / len(eval_res))
+		print('(', t, '/', len(t_desc), ')', "==>", correct / top_n, "==>", sum(eval_res) / len(eval_res))
 		
 		dst_cur = dst_root + '/test_' + str(test_num) + '_c' + str(correct)
 		os.makedirs(dst_cur)
