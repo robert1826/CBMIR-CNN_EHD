@@ -40,6 +40,13 @@ def get_file_name(s):
 	 num = re.search('(\d+)(?=(\.png|\.jpg))', s).group(1)
 	 return num + '.png'
 
+def distance(a,b):
+	dsum = 0.
+	# print(len(a),len(b))
+	for i in range(len(a)):
+		dsum += (a[i]-b[i])**2
+	return dsum
+
 def read_EHD():
 	ehd = {}
 	with open(sys.argv[1], 'r') as f:
@@ -92,3 +99,9 @@ if __name__ == '__main__':
 		useful_classes = set(useful_classes)
 		
 		useful_images = [j for j in indexR[i] if labels[j] in useful_classes]
+		# print(useful_images)
+		
+		ehd_retrieval = sorted(useful_images, key=lambda x: -distance(ehd[get_basename(names[x])], ehd[get_basename(t_names[i])]))
+		# print(ehd_retrieval)
+
+		
