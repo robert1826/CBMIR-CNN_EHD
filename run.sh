@@ -15,7 +15,7 @@ head tmp_test.txt -n 20 > test_dataset.txt
 echo 'done'
 echo ''
 
-echo 'Generating training descriptors file'
+echo 'Generating descriptors files'
 optirun python myalexnet_forward.py ./ train_dataset.txt train_codes_02.csv_labels.pickle
 optirun python myalexnet_forward.py ./ test_dataset.txt test_codes_03.csv_labels.pickle
 echo 'done'
