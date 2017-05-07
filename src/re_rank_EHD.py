@@ -37,8 +37,8 @@ def get_basename(s):
 	 return num
 
 def get_file_name(s):
-	 num = re.search('(\d+)(?=(\.png|\.jpg))', s).group(1)
-	 return num + '.png'
+	num = re.search('(\d+)(?=(\.png|\.jpg))', s).group(1)
+	return num + '.png'
 
 def distance(a,b):
 	dsum = 0.
