@@ -54,8 +54,12 @@ export LD_LIBRARY_PATH=$(pwd)/solibs/
 echo 'done'
 echo ''
 
-
 cd ../src/
+echo 'EHD retrieval'
+python re_rank_EHD.py ../mpeg7fexlin/ehd_out.txt
+echo 'done'
+echo ''
+
 rm tmp*.txt
 mkdir ../generated_files
 mv train* ../generated_files -f
