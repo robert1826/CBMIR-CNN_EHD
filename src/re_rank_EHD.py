@@ -107,26 +107,13 @@ if __name__ == '__main__':
 		ehd_retrieval = sorted(useful_images, key=lambda x: -distance(ehd[get_basename(names[x])], ehd[get_basename(t_names[i])]))
 		# print(ehd_retrieval)
 
-		all_retrievals[i] = ehd_retrieval
+		all_retrievals[i] = ehd_retrieval[:20]
 	
-	# evaluation using ANMRR
-	max_Nj = -1
+	# evaluation using accuracy
+	eval_res = []
 	for i in all_retrievals.keys():
-		cur = sum([1 for j in all_retrievals[i] if t_labels[i] == labels[j]])
-		max_Nj = max(max_Nj, cur)
+		correct = sum([ 1 for j in all_retrievals[i] if labels[j] == t_labels[i] ])
+		eval_res += [correct / 20]
 
-	ANMRR = 0
-	for i in all_retrievals.keys():
-		Ni = sum([1 for j in labels if j == t_labels[i]])
-		matches = [(j + 1) for j in range(len(all_retrievals[i])) if labels[all_retrievals[i][j]] == t_labels[i]]
-		
-		avg = sum(matches) + (Ni - len(matches)) * 21
-		avg /= Ni 
-
-		MRR = avg - 0.5 - Ni / 2
-		Ki = min(4 * Ni, 2 * max_Nj)
-		NMRR = MRR / (Ki + 0.5 - 0.5 * Ni)
-		ANMRR += NMRR
-	ANMRR /= len(t_desc)
-
-	print('[ANMRR] is', ANMRR)
+	accuracy = sum(eval_res) / len(eval_res)
+	print('[Accuracy]', accuracy)
