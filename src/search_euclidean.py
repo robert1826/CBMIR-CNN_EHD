@@ -46,7 +46,7 @@ if __name__ == "__main__":
 	### for visualization
 	dst_root = 'Retrieval'
 	shutil.rmtree(dst_root, True)
-	os.makedirs(dst_root)
+	# os.makedirs(dst_root)
 	src_root = sys.argv[3]
 	src_root2 = sys.argv[4]
 
@@ -81,11 +81,11 @@ if __name__ == "__main__":
 		print('(', t, '/', len(t_desc), ')', "==>", correct / top_n, "==>", sum(eval_res) / len(eval_res))
 		
 		dst_cur = dst_root + '/test_' + str(test_num) + '_c' + str(correct)
-		os.makedirs(dst_cur)
+		# os.makedirs(dst_cur)
 
 		src = src_root2 + t_names[t]
 		dst = dst_cur + '/query_' + t_labels[t]
-		shutil.copyfile(src, dst)
+		# shutil.copyfile(src, dst)
 		
 		ResultQ.append(src)
 		indexQ.append(t)
@@ -96,7 +96,7 @@ if __name__ == "__main__":
 			src = src_root + names[retrievals[j][1]]
 
 			dst = dst_cur + '/' + str(j) + '_' + labels[retrievals[j][1]] + '.png'
-			shutil.copyfile(src, dst)
+			# shutil.copyfile(src, dst)
 			tempR.append(src)
 			tmpindex.append(retrievals[j][1])
 		
