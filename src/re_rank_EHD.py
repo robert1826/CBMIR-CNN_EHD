@@ -104,7 +104,7 @@ if __name__ == '__main__':
 		useful_images = [j for j in indexR[i] if labels[j] in useful_classes]
 		# print(useful_images)
 		
-		ehd_retrieval = sorted(useful_images, key=lambda x: -distance(ehd[get_basename(names[x])], ehd[get_basename(t_names[i])]))
+		ehd_retrieval = sorted(useful_images, key=lambda x: distance(ehd[get_basename(names[x])], ehd[get_basename(t_names[i])]))
 		# print(ehd_retrieval)
 
 		all_retrievals[i] = ehd_retrieval[:20]
