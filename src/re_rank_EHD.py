@@ -73,6 +73,7 @@ if __name__ == '__main__':
 	# all_retrievals[i] = list of sorted retrievals for test img i
 	all_retrievals = {}
 
+	top_n = 20
 	for i in indexQ:
 		relevance_score = {}
 		for j in indexR[i]:
@@ -82,10 +83,10 @@ if __name__ == '__main__':
 			current_score = 0
 			for j in list(reversed(indexR[i])):
 				if labels[j] == current_label:
-					current_score += 1 - list(reversed(indexR[i])).index(j) // 20
+					current_score += 1 - list(reversed(indexR[i])).index(j) // top_n
 			relevance_score[current_label] = current_score
 
-		alpha = sum(1 - i // 20 for i in range(10))
+		alpha = sum(1 - i // top_n for i in range(10))
 		relevance_score = list(zip(list(relevance_score.keys()), list(relevance_score.values())))
 		relevance_score = sorted(relevance_score, key=lambda x : -x[1])
 
@@ -107,13 +108,13 @@ if __name__ == '__main__':
 		ehd_retrieval = sorted(useful_images, key=lambda x: distance(ehd[get_basename(names[x])], ehd[get_basename(t_names[i])]))
 		# print(ehd_retrieval)
 
-		all_retrievals[i] = ehd_retrieval[:20]
+		all_retrievals[i] = ehd_retrieval[:top_n]
 	
 	# evaluation using accuracy
 	eval_res = []
 	for i in all_retrievals.keys():
 		correct = sum([ 1 for j in all_retrievals[i] if labels[j] == t_labels[i] ])
-		eval_res += [correct / 20]
+		eval_res += [correct / top_n]
 
 	accuracy = sum(eval_res) / len(eval_res)
 	print('[Accuracy]', accuracy)
