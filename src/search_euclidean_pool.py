@@ -116,7 +116,8 @@ if __name__ == "__main__":
 	    'query': ResultQ,
 	   	'result': ResultR, 
 	   	'query_index': indexQ,
-	   	'result_index': indexR
+	   	'result_index': indexR,
+		'acc' : sum(eval_res) / len(eval_res)
 	}
 	pickle.dump(save, f, pickle.HIGHEST_PROTOCOL)
 	f.close()
