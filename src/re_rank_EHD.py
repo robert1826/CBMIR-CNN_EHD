@@ -28,8 +28,8 @@ def load_retrieval_result():
 		ResultR = save['result']
 		indexQ = save['query_index']
 		indexR = save['result_index'] 
-	del ResultR[0]
-	del indexR[0]
+	# del ResultR[0]
+	# del indexR[0]
 	return ResultQ, ResultR, indexQ, indexR
 
 def get_basename(s):

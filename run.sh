@@ -22,7 +22,7 @@ echo 'done'
 echo ''
 
 echo 'Generating retrieval files'
-python search_euclidean.py train_dataset.txt_desc test_dataset.txt_desc ../IRMA/ImageCLEFmed2009_train.02/ ../IRMA/ImageCLEFmed2009_test.03/ 
+python search_euclidean_pool.py train_dataset.txt_desc test_dataset.txt_desc ../IRMA/ImageCLEFmed2009_train.02/ ../IRMA/ImageCLEFmed2009_test.03/ 
 echo 'done'
 echo ''
 
