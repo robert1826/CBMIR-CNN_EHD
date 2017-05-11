@@ -75,7 +75,7 @@ if __name__ == '__main__':
 	# all_retrievals[i] = list of sorted retrievals for test img i
 	all_retrievals = {}
 
-	top_n = 20
+	top_n = 5
 	for i in indexQ:
 		relevance_score = {}
 		indexR[i] = indexR[i][-25:]
