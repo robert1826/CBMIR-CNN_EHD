@@ -116,5 +116,6 @@ if __name__ == '__main__':
 		correct = sum([ 1 for j in all_retrievals[i] if labels[j] == t_labels[i] ])
 		eval_res += [correct / top_n]
 
-	accuracy = sum(eval_res) / len(eval_res)
-	print('[Accuracy]', accuracy)
+	print('[Mean Accuracy]', sum(eval_res) / len(eval_res))
+	print('[Min. Accuracy]', min(eval_res))
+	print('[Max. Accuracy]', max(eval_res))
