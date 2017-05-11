@@ -30,7 +30,7 @@ import re
 import sys
 
 # Dataset_PATH = './IRMA/'
-batch_size = 16
+batch_size = 1
 net_data = load(open('../bvlc_alexnet.npy', 'rb'), encoding="latin1").item()
 num_labels = 57
 train_labels = []
