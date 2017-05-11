@@ -28,9 +28,10 @@ def load_retrieval_result():
 		ResultR = save['result']
 		indexQ = save['query_index']
 		indexR = save['result_index'] 
+		acc = save['acc']
 	# del ResultR[0]
 	# del indexR[0]
-	return ResultQ, ResultR, indexQ, indexR
+	return ResultQ, ResultR, indexQ, indexR, acc
 
 def get_basename(s):
 	 num = re.search('(\d+)(?=(\.png|\.jpg))', s).group(1)
@@ -68,7 +69,8 @@ if __name__ == '__main__':
 	# name : 1000.png, result : ../IRMA/../../../1000.png
 	desc, labels, names = load_descriptor('train_dataset.txt_desc')
 	t_desc, t_labels,t_names = load_descriptor('test_dataset.txt_desc')
-	ResultQ, ResultR, indexQ, indexR = load_retrieval_result()
+	ResultQ, ResultR, indexQ, indexR, acc = load_retrieval_result()
+	print('[Phase 1 Mean Acc.]', acc, '\n')
 
 	# all_retrievals[i] = list of sorted retrievals for test img i
 	all_retrievals = {}
