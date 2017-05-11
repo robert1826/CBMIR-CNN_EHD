@@ -76,6 +76,7 @@ if __name__ == '__main__':
 	top_n = 20
 	for i in indexQ:
 		relevance_score = {}
+		indexR[i] = indexR[i][-25:]
 		for j in indexR[i]:
 			relevance_score[ labels[j] ] = 0
 		
