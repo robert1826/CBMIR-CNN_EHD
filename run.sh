@@ -10,8 +10,8 @@ echo ''
 echo 'Generating dataset lists'
 find -L .. -path "*IRMA*train*png" > ./tmp_train.txt
 find -L .. -path "*IRMA*test*png" > ./tmp_test.txt
-head tmp_train.txt -n 300 > train_dataset.txt
-head tmp_test.txt -n 20 > test_dataset.txt
+head tmp_train.txt -n 1000 > train_dataset.txt
+head tmp_test.txt -n 100 > test_dataset.txt
 echo 'done'
 echo ''
 
@@ -50,7 +50,8 @@ echo ''
 
 echo 'Generating image descriptors'
 export LD_LIBRARY_PATH=$(pwd)/solibs/
-./MPEG7Fex EHD dataset-converted.txt ehd_out.txt
+./MPEG7Fex EHD dataset-converted.txt ehd_out.txt > mpeg7fexlin_out.txt
+rm mpeg7fexlin_out.txt
 echo 'done'
 echo ''
 
