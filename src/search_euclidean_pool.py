@@ -88,12 +88,7 @@ if __name__ == "__main__":
 	t_desc, t_labels,t_names = load_data(sys.argv[2])
 
 	# filter 'best' 100 test images
-	good = []
-	next_class = 1
-	while len(good) < 100:
-		good += [i for i in range(len(t_labels)) if t_labels[i] == str(next_class)]
-		next_class += 1
-	good = good[:100]
+	good = [i for i in range(len(t_labels)) if int(t_labels[i]) < 45][:100]
 	t_desc = [t_desc[i] for i in good]
 	t_labels = [t_labels[i] for i in good]
 	t_names = [t_names[i] for i in good]
