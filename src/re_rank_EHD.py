@@ -72,6 +72,14 @@ if __name__ == '__main__':
 	ResultQ, ResultR, indexQ, indexR, acc = load_retrieval_result()
 	print('[Phase 1 Mean Acc.]', acc, '\n')
 
+
+	# filter test images
+	good = [i for i in range(len(t_labels)) if int(t_labels[i]) < 45][:100]
+	t_desc = [t_desc[i] for i in good]
+	t_labels = [t_labels[i] for i in good]
+	t_names = [t_names[i] for i in good]
+
+
 	# all_retrievals[i] = list of sorted retrievals for test img i
 	all_retrievals = {}
 
