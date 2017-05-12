@@ -50,8 +50,7 @@ echo ''
 
 echo 'Generating image descriptors'
 export LD_LIBRARY_PATH=$(pwd)/solibs/
-./MPEG7Fex EHD dataset-converted.txt ehd_out.txt > mpeg7fexlin_out.txt
-rm mpeg7fexlin_out.txt
+./MPEG7Fex EHD dataset-converted.txt ehd_out.txt 2>/dev/null
 echo 'done'
 echo ''
 
