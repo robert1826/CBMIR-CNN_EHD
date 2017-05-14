@@ -181,7 +181,7 @@ if __name__ == "__main__":
 		# eval_res2 += [correct2 / top_n]
 		
 		# print(t, "==>", correct / top_n, "==>", sum(eval_res) / len(eval_res), "||", correct2 / top_n, "==>", sum(eval_res2) / len(eval_res2))
-		print(t, "==>", correct / top_n, "==>", sum(eval_res) / len(eval_res))
+		print('( {} / {} )'.format(t, len(t_desc), "==>", correct / top_n, "==>", sum(eval_res) / len(eval_res))
 
 		out_resultQ += [ResultQ[t]]
 		out_indexQ += [t]
