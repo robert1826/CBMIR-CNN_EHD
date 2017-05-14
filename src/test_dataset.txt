@@ -1,0 +1,5 @@
+../IRMA/ImageCLEFmed2009_test.03/15114.png
+../IRMA/ImageCLEFmed2009_test.03/13913.png
+../IRMA/ImageCLEFmed2009_test.03/370611.png
+../IRMA/ImageCLEFmed2009_test.03/765186.png
+../IRMA/ImageCLEFmed2009_test.03/13961.png

@@ -94,7 +94,7 @@ if __name__ == "__main__":
 	ResultQ, ResultR, indexQ, indexR, acc = load_retrieval_result('retrieval_result_fc7')
 
 	# Make result directory
-	dst_root = 'Retrieval22'
+	# dst_root = 'Retrieval22'
 	# shutil.rmtree(dst_root, True)
 	# os.makedirs(dst_root)
 	# src_root = 'ImageCLEFmed2009_train.02/'
