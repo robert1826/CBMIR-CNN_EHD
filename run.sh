@@ -10,8 +10,8 @@ echo ''
 echo 'Generating dataset lists'
 find -L .. -path "*IRMA*train*png" > ./tmp_train.txt
 find -L .. -path "*IRMA*test*png" > ./tmp_test.txt
-head tmp_train.txt -n 1000 > train_dataset.txt
-head tmp_test.txt -n 100 > test_dataset.txt
+head tmp_train.txt -n 100 > train_dataset.txt
+head tmp_test.txt -n 5 > test_dataset.txt
 echo 'done'
 echo ''
 
@@ -56,7 +56,7 @@ echo ''
 
 cd ../src/
 echo 'EHD retrieval'
-python re_rank_EHD.py ../mpeg7fexlin/ehd_out.txt
+python re_rank_EHD.py ../mpeg7fexlin/ehd_out.txt retrieval_result_fc7
 echo 'done'
 echo ''
 
