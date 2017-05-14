@@ -10,8 +10,8 @@ echo ''
 echo 'Generating dataset lists'
 # find -L .. -path "*IRMA*train*png" > ./tmp_train.txt
 # find -L .. -path "*IRMA*test*png" > ./tmp_test.txt
-head alfred_train_dataset.txt -n 1000 > train_dataset.txt
-head alfred_test_dataset.txt -n 5 > test_dataset.txt
+head alfred_train_dataset.txt -n 15000 > train_dataset.txt
+head alfred_test_dataset.txt -n 15000 > test_dataset.txt
 echo 'done'
 echo ''
 
