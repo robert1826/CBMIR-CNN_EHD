@@ -10,8 +10,8 @@ echo ''
 echo 'Generating dataset lists'
 # find -L .. -path "*IRMA*train*png" > ./tmp_train.txt
 # find -L .. -path "*IRMA*test*png" > ./tmp_test.txt
-head alfred_train_dataset.txt -n 15000 > train_dataset.txt
-head alfred_test_dataset.txt -n 15000 > test_dataset.txt
+head alfred_train_dataset.txt -n 100 > train_dataset.txt
+head alfred_test_dataset.txt -n 5 > test_dataset.txt
 echo 'done'
 echo ''
 
@@ -25,6 +25,13 @@ echo 'Generating retrieval files'
 python search_euclidean_pool.py train_dataset.txt_desc test_dataset.txt_desc ../IRMA/ImageCLEFmed2009_train.02/ ../IRMA/ImageCLEFmed2009_test.03/ 
 echo 'done'
 echo ''
+
+echo 'Alfred search2'
+python search2.py
+echo 'done'
+echo ''
+
+exit
 
 # EHD part
 cd ../mpeg7fexlin/

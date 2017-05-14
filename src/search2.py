@@ -10,35 +10,32 @@ import numpy as np
 import random
 import sys
 import heapq as hq
-import shutil
-import os
+# import shutil
+# import os
 # import gist #https://github.com/yuichiroTCY/lear-gist-python
 
-def load_data(name):
+def load_descriptor(name):
 	with open(name, 'rb') as f:
 		save = pickle.load(f)
 		desc = save['desc7']
-		labels = save['train_labels']
+		labels = save['labels']
 		names = save['name']
-		print(len(desc))
-		print(len(labels))
 		del save
-		print('loaded')
 
 	return desc, labels, names
 
-def load_result(name):
-	with open(name, 'rb') as f:
+def load_retrieval_result(fileName):
+	with open(fileName, 'rb') as f:
 		save = pickle.load(f)
 		ResultQ = save['query']
 		ResultR = save['result']
 		indexQ = save['query_index']
 		indexR = save['result_index'] 
-	print(len(ResultQ))
-	print(len(ResultR))
-	del ResultR[0]
-	del indexR[0]
-	return ResultQ, ResultR, indexQ, indexR
+		acc = save['acc']
+	# del ResultR[0]
+	# del indexR[0]
+	return ResultQ, ResultR, indexQ, indexR, acc
+
 
 # # gist descriptor of size 960
 # def gist_descriptor(img):
@@ -92,14 +89,14 @@ def distance(a,b):
 
 
 if __name__ == "__main__":
-	desc, labels, names = load_data('train_desc')
-	t_desc, t_labels,t_names = load_data('test_desc')
-	ResultQ, ResultR, indexQ, indexR = load_result('retrieval_result_fc8')
+	desc, labels, names = load_descriptor('train_dataset.txt_desc')
+	t_desc, t_labels,t_names = load_descriptor('test_dataset.txt_desc')
+	ResultQ, ResultR, indexQ, indexR, acc = load_retrieval_result('retrieval_result_fc7')
 
 	# Make result directory
 	dst_root = 'Retrieval22'
-	shutil.rmtree(dst_root, True)
-	os.makedirs(dst_root)
+	# shutil.rmtree(dst_root, True)
+	# os.makedirs(dst_root)
 	src_root = 'ImageCLEFmed2009_train.02/'
 	src_root2 = 'ImageCLEFmed2009_test.03/'
 
@@ -108,9 +105,7 @@ if __name__ == "__main__":
 	eval_res = []
 	eval_res2 = []
 	top_n = 5
-	# for t in range(len(t_desc)):
-	# for t in range(len(ResultQ)):
-	for t in range(100):
+	for t in range(len(t_desc)):
 		rbc_test_img = misc.imread(ResultQ[t],mode='L')
 		rbc_test_img = misc.imresize(rbc_test_img,(resize,resize))
 		
@@ -185,17 +180,17 @@ if __name__ == "__main__":
 		
 		# Save output images
 		dst_cur = dst_root + '/test_' + str(test_num) + '_c' + str(correct)
-		os.makedirs(dst_cur)
+		# os.makedirs(dst_cur)
 
 		src = ResultQ[t]
 		dst = dst_cur + '/query_' + t_labels[t]
-		shutil.copyfile(src, dst)
+		# shutil.copyfile(src, dst)
 
 		for j in range(len(retrievals)):
 			src = ResultR[t][retrievals[j][1]]
 
 			dst = dst_cur + '/' + str(j) + '_' + labels[ indexR[t][retrievals[j][1]] ] + '.png'
-			shutil.copyfile(src, dst)
+			# shutil.copyfile(src, dst)
 	
 	print('[Mean Accuracy]', sum(eval_res) / len(eval_res))
 	print('[Mean Accuracy]', sum(eval_res2) / len(eval_res2))
