@@ -93,12 +93,18 @@ if __name__ == "__main__":
 	t_desc, t_labels,t_names = load_descriptor('test_dataset.txt_desc')
 	ResultQ, ResultR, indexQ, indexR, acc = load_retrieval_result('retrieval_result_fc7')
 
+	# output stuff
+	out_resultQ = []
+	out_resultR = []
+	out_indexQ = []
+	out_indexR = []
+
 	# Make result directory
 	# dst_root = 'Retrieval22'
 	# shutil.rmtree(dst_root, True)
 	# os.makedirs(dst_root)
-	# src_root = 'ImageCLEFmed2009_train.02/'
-	# src_root2 = 'ImageCLEFmed2009_test.03/'
+	src_root = '../IRMA/ImageCLEFmed2009_train.02/'
+	src_root2 = '../IRMA/ImageCLEFmed2009_test.03/'
 
 	test_num = -1
 	resize = 192
@@ -177,7 +183,11 @@ if __name__ == "__main__":
 		# print(t, "==>", correct / top_n, "==>", sum(eval_res) / len(eval_res), "||", correct2 / top_n, "==>", sum(eval_res2) / len(eval_res2))
 		print(t, "==>", correct / top_n, "==>", sum(eval_res) / len(eval_res))
 
-		
+		out_resultQ += [ResultQ[t]]
+		out_indexQ += [t]
+		out_indexR += [ [u[1] for u in retrievals] ]
+		out_resultR += [  [ src_root + names[u] for u in out_indexR[-1]]  ]
+
 		# Save output images
 		# dst_cur = dst_root + '/test_' + str(test_num) + '_c' + str(correct)
 		# os.makedirs(dst_cur)
@@ -193,3 +203,15 @@ if __name__ == "__main__":
 	
 	print('[Mean Accuracy]', sum(eval_res) / len(eval_res))
 	# print('[Mean Accuracy]', sum(eval_res2) / len(eval_res2))
+
+	f = open("alfred_search2_retrieval", 'wb')
+	save = {
+	    'query': out_resultQ,
+	   	'result': out_resultR, 
+	   	'query_index': out_indexQ,
+	   	'result_index': out_indexR,
+		'acc' : sum(eval_res) / len(eval_res)
+	}
+	pickle.dump(save, f, pickle.HIGHEST_PROTOCOL)
+	f.close()
+	print("saved file")
