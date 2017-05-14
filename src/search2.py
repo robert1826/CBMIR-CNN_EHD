@@ -110,7 +110,7 @@ if __name__ == "__main__":
 	resize = 192
 	eval_res = []
 	# eval_res2 = []
-	top_n = 5
+	top_n = 100
 	for t in range(len(t_desc)):
 		rbc_test_img = misc.imread(ResultQ[t],mode='L')
 		rbc_test_img = misc.imresize(rbc_test_img,(resize,resize))
