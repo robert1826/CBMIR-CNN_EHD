@@ -97,8 +97,8 @@ if __name__ == "__main__":
 	dst_root = 'Retrieval22'
 	# shutil.rmtree(dst_root, True)
 	# os.makedirs(dst_root)
-	src_root = 'ImageCLEFmed2009_train.02/'
-	src_root2 = 'ImageCLEFmed2009_test.03/'
+	# src_root = 'ImageCLEFmed2009_train.02/'
+	# src_root2 = 'ImageCLEFmed2009_test.03/'
 
 	test_num = -1
 	resize = 192
@@ -179,17 +179,16 @@ if __name__ == "__main__":
 
 		
 		# Save output images
-		dst_cur = dst_root + '/test_' + str(test_num) + '_c' + str(correct)
+		# dst_cur = dst_root + '/test_' + str(test_num) + '_c' + str(correct)
 		# os.makedirs(dst_cur)
 
-		src = ResultQ[t]
-		dst = dst_cur + '/query_' + t_labels[t]
+		# src = ResultQ[t]
+		# dst = dst_cur + '/query_' + t_labels[t]
 		# shutil.copyfile(src, dst)
 
-		for j in range(len(retrievals)):
-			src = ResultR[t][retrievals[j][1]]
-
-			dst = dst_cur + '/' + str(j) + '_' + labels[ indexR[t][retrievals[j][1]] ] + '.png'
+		# for j in range(len(retrievals)):
+			# src = ResultR[t][retrievals[j][1]]
+			# dst = dst_cur + '/' + str(j) + '_' + labels[ indexR[t][retrievals[j][1]] ] + '.png'
 			# shutil.copyfile(src, dst)
 	
 	print('[Mean Accuracy]', sum(eval_res) / len(eval_res))
