@@ -21,8 +21,8 @@ def load_descriptor(name):
 
 	return desc, labels, names
 
-def load_retrieval_result():
-	with open('retrieval_result_fc7', 'rb') as f:
+def load_retrieval_result(fileName):
+	with open(fileName, 'rb') as f:
 		save = pickle.load(f)
 		ResultQ = save['query']
 		ResultR = save['result']
@@ -60,8 +60,8 @@ def read_EHD():
 
 
 if __name__ == '__main__':
-	if len(sys.argv) < 2:
-		print('error : please input the EHD file')
+	if len(sys.argv) < 3:
+		print('error : please input (EHD file, prev retrieval result)')
 		exit(1)
 
 	ehd = read_EHD()
@@ -69,7 +69,7 @@ if __name__ == '__main__':
 	# name : 1000.png, result : ../IRMA/../../../1000.png
 	desc, labels, names = load_descriptor('train_dataset.txt_desc')
 	t_desc, t_labels,t_names = load_descriptor('test_dataset.txt_desc')
-	ResultQ, ResultR, indexQ, indexR, acc = load_retrieval_result()
+	ResultQ, ResultR, indexQ, indexR, acc = load_retrieval_result(sys.argv[2])
 	print('[Phase 1 Mean Acc.]', acc, '\n')
 
 	# all_retrievals[i] = list of sorted retrievals for test img i
