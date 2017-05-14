@@ -103,7 +103,7 @@ if __name__ == "__main__":
 	test_num = -1
 	resize = 192
 	eval_res = []
-	eval_res2 = []
+	# eval_res2 = []
 	top_n = 5
 	for t in range(len(t_desc)):
 		rbc_test_img = misc.imread(ResultQ[t],mode='L')
@@ -121,8 +121,8 @@ if __name__ == "__main__":
 		combined_ret = []
 		retrievals = []
 
-		combined_ret2 = []
-		retrievals2 = []
+		# combined_ret2 = []
+		# retrievals2 = []
 	
 		for i in range(len(ResultR[t])):
 			# Calculate different distances
@@ -162,20 +162,20 @@ if __name__ == "__main__":
 		
 		for i in range(len(fc7_retrievals)):
 			hq.heappush(combined_ret, (rbc_retrievals[i]+fc7_retrievals[i], i))
-			hq.heappush(combined_ret2, (rbc_retrievals[i], i))
+			# hq.heappush(combined_ret2, (rbc_retrievals[i], i))
 		
 		# retrieve top N result
 		for x in range(top_n):
 			retrievals.append(hq.heappop(combined_ret))
-			retrievals2.append(hq.heappop(combined_ret2))
+			# retrievals2.append(hq.heappop(combined_ret2))
 		correct = sum([1 for j in [labels[ indexR[t][u[1]] ] for u in retrievals] if j == t_labels[t]])
 		eval_res += [correct / top_n]
 
-		correct2 = sum([1 for j in [labels[ indexR[t][u[1]] ] for u in retrievals2] if j == t_labels[t]])
-		eval_res2 += [correct2 / top_n]
+		# correct2 = sum([1 for j in [labels[ indexR[t][u[1]] ] for u in retrievals2] if j == t_labels[t]])
+		# eval_res2 += [correct2 / top_n]
 		
-		print(t, "==>", correct / top_n, "==>", sum(eval_res) / len(eval_res),
-				"||", correct2 / top_n, "==>", sum(eval_res2) / len(eval_res2))
+		# print(t, "==>", correct / top_n, "==>", sum(eval_res) / len(eval_res), "||", correct2 / top_n, "==>", sum(eval_res2) / len(eval_res2))
+		print(t, "==>", correct / top_n, "==>", sum(eval_res) / len(eval_res))
 
 		
 		# Save output images
@@ -193,4 +193,4 @@ if __name__ == "__main__":
 			# shutil.copyfile(src, dst)
 	
 	print('[Mean Accuracy]', sum(eval_res) / len(eval_res))
-	print('[Mean Accuracy]', sum(eval_res2) / len(eval_res2))
+	# print('[Mean Accuracy]', sum(eval_res2) / len(eval_res2))
