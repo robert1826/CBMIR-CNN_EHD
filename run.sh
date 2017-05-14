@@ -56,7 +56,7 @@ echo ''
 
 cd ../src/
 echo 'EHD retrieval'
-python re_rank_EHD.py ../mpeg7fexlin/ehd_out.txt
+python re_rank_EHD.py ../mpeg7fexlin/ehd_out.txt retrieval_result_fc7
 echo 'done'
 echo ''
 
