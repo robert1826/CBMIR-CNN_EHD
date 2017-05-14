@@ -31,8 +31,6 @@ python search2.py
 echo 'done'
 echo ''
 
-exit
-
 # EHD part
 cd ../mpeg7fexlin/
 
@@ -63,7 +61,7 @@ echo ''
 
 cd ../src/
 echo 'EHD retrieval'
-python re_rank_EHD.py ../mpeg7fexlin/ehd_out.txt retrieval_result_fc7
+python re_rank_EHD.py ../mpeg7fexlin/ehd_out.txt alfred_search2_retrieval
 echo 'done'
 echo ''
 
@@ -73,6 +71,7 @@ mv train* ../generated_files -f
 mv test* ../generated_files -f
 mv Retrieval ../generated_files -f
 mv retrieval_result_fc7 ../generated_files -f
+mv alfred_search2_retrieval ../generated_files -f
 
 # clean mpeg dir
 cd ../mpeg7fexlin/
