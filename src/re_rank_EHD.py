@@ -72,6 +72,13 @@ if __name__ == '__main__':
 	ResultQ, ResultR, indexQ, indexR, acc = load_retrieval_result(sys.argv[2])
 	print('[Phase 1 Mean Acc.]', acc, '\n')
 
+	phase_1_res = []
+	for i in indexQ:
+		res = indexR[i][-5:]
+		correct = sum([1 for u in res if labels[u] == t_labels[i]])
+		phase_1_res += [correct / 5]
+	print('phase 1 acc top-5 :', sum(phase_1_res) / len(phase_1_res))phase_1_res = []
+
 	# all_retrievals[i] = list of sorted retrievals for test img i
 	all_retrievals = {}
 
