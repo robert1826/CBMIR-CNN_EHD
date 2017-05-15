@@ -77,7 +77,7 @@ if __name__ == '__main__':
 		res = indexR[i][-5:]
 		correct = sum([1 for u in res if labels[u] == t_labels[i]])
 		phase_1_res += [correct / 5]
-	print('phase 1 acc top-5 :', sum(phase_1_res) / len(phase_1_res))phase_1_res = []
+	print('phase 1 acc top-5 :', sum(phase_1_res) / len(phase_1_res))
 
 	# all_retrievals[i] = list of sorted retrievals for test img i
 	all_retrievals = {}
