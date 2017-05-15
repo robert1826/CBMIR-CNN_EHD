@@ -10,6 +10,7 @@ import heapq as hq
 import shutil
 import os
 import re
+import scipy.spatial.distance as dis
 
 def load_descriptor(name):
 	with open(name, 'rb') as f:
@@ -42,11 +43,15 @@ def get_file_name(s):
 	return num + '.png'
 
 def distance(a,b):
-	dsum = 0.
-	# print(len(a),len(b))
-	for i in range(len(a)):
-		dsum += (a[i]-b[i])**2
-	return dsum
+	return dis.braycurtis(a, b)  # 61.2
+	# return dis.cosine(a, b) # 61
+	# return dis.euclidean(a, b) # 60.9
+	# return dis.correlation(a, b) # 60.7
+	# return dis.cityblock(a, b) # 60.4
+	# return dis.canberra(a, b) # 59.5
+	# return dis.chebyshev(a, b) # 52.3
+	# return dis.chebyshev(a, b) # 52.3
+	
 
 def read_EHD():
 	ehd = {}
@@ -71,14 +76,20 @@ if __name__ == '__main__':
 	t_desc, t_labels,t_names = load_descriptor('test_dataset.txt_desc')
 	ResultQ, ResultR, indexQ, indexR, acc = load_retrieval_result(sys.argv[2])
 	print('[Phase 1 Mean Acc.]', acc, '\n')
-
+	
+	# calc phase 1 top-5 accuracy
+	phase_1_res = []
+	for i in indexQ:
+		res = indexR[i][-5:]
+		correct = sum([1 for u in res if labels[u] == t_labels[i]])
+		phase_1_res += [correct / 5]
+	print('phase 1 acc top-5 :', sum(phase_1_res) / len(phase_1_res))
 
 	# filter test images
 	good = [i for i in range(len(t_labels)) if int(t_labels[i]) < 45][:100]
 	t_desc = [t_desc[i] for i in good]
 	t_labels = [t_labels[i] for i in good]
 	t_names = [t_names[i] for i in good]
-
 
 	# all_retrievals[i] = list of sorted retrievals for test img i
 	all_retrievals = {}

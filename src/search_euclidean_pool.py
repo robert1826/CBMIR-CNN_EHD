@@ -9,6 +9,7 @@ import heapq as hq
 import shutil
 import os
 from multiprocessing import Pool
+import scipy.spatial.distance as dis
 
 #Load the data descriptors
 labels_index = {}
@@ -28,11 +29,14 @@ def load_data(name):
 	return desc, labels, names
 
 def distance(a,b):
-	dsum = 0.
-	# print(len(a),len(b))
-	for i in range(len(a)):
-		dsum += (a[i]-b[i])**2
-	return dsum
+	# return dis.braycurtis(a, b)  # 61.2
+	# return dis.cosine(a, b) # 61
+	return dis.euclidean(a, b) # 60.9
+	# return dis.correlation(a, b) # 60.7
+	# return dis.cityblock(a, b) # 60.4
+	# return dis.canberra(a, b) # 59.5
+	# return dis.chebyshev(a, b) # 52.3
+	# return dis.chebyshev(a, b) # 52.3
 
 def cbir(cbir_args):
 	# args desc, labels, names, t_desc, t_labels, t_names, top_n, test_num, src_root, src_root2
