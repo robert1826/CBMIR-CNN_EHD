@@ -1,9 +1,9 @@
 cd ./src/
 
 echo 'Generating labels pickle files'
-python generate_labels.py ../codes/train_codes_02.csv
-python generate_labels.py ../codes/test_codes_03.csv
-mv ../codes/*.pickle .
+python generate_labels.py ../data_files/train_codes_02.csv
+python generate_labels.py ../data_files/test_codes_03.csv
+mv ../data_files/*.pickle .
 echo 'done'
 echo ''
 
@@ -27,36 +27,36 @@ echo 'done'
 echo ''
 
 # EHD part
-cd ../mpeg7fexlin/
+# cd ../mpeg7fexlin/
 
-echo 'Getting dataset lists'
-cp ../src/*dataset*txt .
-echo 'done'
-echo ''
+# echo 'Getting dataset lists'
+# cp ../src/*dataset*txt .
+# echo 'done'
+# echo ''
 
-echo 'Converting images to JPG'
-mkdir convert_dir
-for img in $(cat train_dataset.txt test_dataset.txt); do 
-    filename=$(basename $img .png)
-    convert $img ./convert_dir/$filename.jpg
-done
-echo 'done'
-echo ''
+# echo 'Converting images to JPG'
+# mkdir convert_dir
+# for img in $(cat train_dataset.txt test_dataset.txt); do 
+#     filename=$(basename $img .png)
+#     convert $img ./convert_dir/$filename.jpg
+# done
+# echo 'done'
+# echo ''
 
-echo 'Generated new imageList file for the converted images'
-find . -path "*jpg" > ./dataset-converted.txt
-echo 'done'
-echo ''
+# echo 'Generated new imageList file for the converted images'
+# find . -path "*jpg" > ./dataset-converted.txt
+# echo 'done'
+# echo ''
 
-echo 'Generating image descriptors'
-export LD_LIBRARY_PATH=$(pwd)/solibs/
-./MPEG7Fex EHD dataset-converted.txt ehd_out.txt 2>/dev/null
-echo 'done'
-echo ''
+# echo 'Generating image descriptors'
+# export LD_LIBRARY_PATH=$(pwd)/solibs/
+# ./MPEG7Fex EHD dataset-converted.txt ehd_out.txt 2>/dev/null
+# echo 'done'
+# echo ''
 
-cd ../src/
+# cd ../src/
 echo 'EHD retrieval'
-python re_rank_EHD.py ../mpeg7fexlin/ehd_out.txt retrieval_result_fc7
+python re_rank_EHD.py ../data_files/ehd_out.txt retrieval_result_fc7
 echo 'done'
 echo ''
 
@@ -68,7 +68,7 @@ mv Retrieval ../generated_files -f
 mv retrieval_result_fc7 ../generated_files -f
 
 # clean mpeg dir
-cd ../mpeg7fexlin/
-rm *dataset*
-rm -r convert_dir
-mv ehd_out.txt ../generated_files
+# cd ../mpeg7fexlin/
+# rm *dataset*
+# rm -r convert_dir
+# mv ehd_out.txt ../generated_files
