@@ -130,8 +130,10 @@ with graph.as_default():
 	fc7W = tf.Variable(net_data["fc7"][0])
 	fc7b = tf.Variable(net_data["fc7"][1])
 	
-	fc8W = tf.Variable(net_data["fc8"][0])
-	fc8b = tf.Variable(net_data["fc8"][1])
+	# fc8W = tf.Variable(net_data["fc8"][0])
+	# fc8b = tf.Variable(net_data["fc8"][1])
+	fc8W = tf.Variable(tf.truncated_normal([4096, num_labels],stddev=0.1))
+	fc8b = tf.Variable(tf.zeros([num_labels]))
 
 	# Model.
 	def model(data):
@@ -216,8 +218,13 @@ if __name__ == '__main__':
 	desc8 = []
 	desc7 = []
 	with tf.Session(graph=graph) as session:
-		tf.global_variables_initializer().run()
-		print('Initialized')
+		# tf.global_variables_initializer().run()
+		# print('Initialized')
+
+		# load saved model
+		saver = tf.train.Saver()
+		saver.restore(session, "model/model_drop_2layers2.ckpt")
+		print("Model Loaded")
 
 		# Generate Descriptors
 		index = 0
