@@ -51,7 +51,7 @@ if __name__ == '__main__':
 		if t_labels[t] not in labels:
 			continue
 		 
-		cur_retrieval = sorted(range(len(desc)), key=lambda x: distance(t_desc[0], desc[x], M))
+		cur_retrieval = sorted(range(len(desc)), key=lambda x: distance(t_desc[t], desc[x], M))
 		all_retrievals[t] = cur_retrieval[:top_n]
 
 		if t % 10 == 0:
