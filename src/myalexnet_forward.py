@@ -223,7 +223,7 @@ if __name__ == '__main__':
 
 		# load saved model
 		saver = tf.train.Saver()
-		saver.restore(session, "model/model_drop_2layers2.ckpt")
+		saver.restore(session, "model/model_drop_2layers130.ckpt")
 		print("Model Loaded")
 
 		# Generate Descriptors
