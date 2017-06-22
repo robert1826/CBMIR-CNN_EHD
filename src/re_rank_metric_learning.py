@@ -9,6 +9,7 @@ import heapq as hq
 import re
 import scipy.spatial.distance as dis
 from scipy import linalg
+from multiprocessing import Pool
 from metric_learn import LMNN
 
 def load_descriptor(name):
@@ -23,6 +24,17 @@ def load_descriptor(name):
 
 def distance(a, b, M):
 	return dis.mahalanobis(a, b, linalg.inv(M))
+
+def one_retrieval(my_args):
+	t_desc = my_args[0]
+	test_ind = my_args[1]
+	desc = my_args[2]
+	top_n = my_args[3]
+	M = my_args[4]
+
+	cur_retrieval = sorted(range(len(desc)), key=lambda x: distance(t_desc[test_ind], desc[x], M))
+	print('Test img #', test_ind, 'done')
+	return (test_ind, cur_retrieval[:top_n])
 
 if __name__ == '__main__':
 	# name : 1000.png, result : ../IRMA/../../../1000.png
@@ -44,20 +56,17 @@ if __name__ == '__main__':
 	print('Finished Metric Learning')
 	M = lmnn.metric()
 
+	### multi-process retrieval
 	# all_retrievals[i] = list of sorted retrievals for test img i
 	all_retrievals = {}
 	top_n = 5
-	for t in range(len(t_labels)):
-		if t_labels[t] not in labels:
-			continue
-		 
-		cur_retrieval = sorted(range(len(desc)), key=lambda x: distance(t_desc[t], desc[x], M))
-		all_retrievals[t] = cur_retrieval[:top_n]
+	
+	with Pool() as pool:
+		ret_res = pool.map(one_retrieval, [ (t_desc, i, desc, top_n, M) for i in range(len(t_desc)) ])
+		for one_res in ret_res:
+			all_retrievals[one_res[0]] = one_res[1]
 
-		if t % 10 == 0:
-			print('Test Image #', t)
-
-	# evaluation using accuracy
+	### evaluation using accuracy
 	eval_res = []
 	for i in all_retrievals.keys():
 		correct = sum([ 1 for j in all_retrievals[i] if labels[j] == t_labels[i] ])
