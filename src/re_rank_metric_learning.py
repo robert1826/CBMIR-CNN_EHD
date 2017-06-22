@@ -32,9 +32,17 @@ def one_retrieval(my_args):
 	top_n = my_args[3]
 	M = my_args[4]
 
-	cur_retrieval = sorted(range(len(desc)), key=lambda x: distance(t_desc[test_ind], desc[x], M))
+	# cur_retrieval = sorted(range(len(desc)), key=lambda x: distance(t_desc[test_ind], desc[x], M))
+	cur_retrieval = []
+	for i in range(len(desc)):
+		dist = distance(t_desc[test_ind], desc[i], M)
+		hq.heappush(cur_retrieval, (-1 * dist, i))
+		if len(cur_retrieval) > top_n:
+			hq.heappop(cur_retrieval)
+
 	print('Test img #', test_ind, 'done')
-	return (test_ind, cur_retrieval[:top_n])
+	# return (test_ind, cur_retrieval[:top_n])
+	return (test_ind, [u[1] for u in cur_retrieval])
 
 if __name__ == '__main__':
 	# name : 1000.png, result : ../IRMA/../../../1000.png
