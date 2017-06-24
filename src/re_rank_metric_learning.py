@@ -22,20 +22,20 @@ def load_descriptor(name):
 
 	return desc, labels, names
 
-def distance(a, b, M):
-	return dis.mahalanobis(a, b, linalg.inv(M))
+def distance(a, b, M_inv):
+	return dis.mahalanobis(a, b, M_inv)
 
 def one_retrieval(my_args):
 	t_desc = my_args[0]
 	test_ind = my_args[1]
 	desc = my_args[2]
 	top_n = my_args[3]
-	M = my_args[4]
+	M_inv = my_args[4]
 
 	# cur_retrieval = sorted(range(len(desc)), key=lambda x: distance(t_desc[test_ind], desc[x], M))
 	cur_retrieval = []
 	for i in range(len(desc)):
-		dist = distance(t_desc[test_ind], desc[i], M)
+		dist = distance(t_desc[test_ind], desc[i], M_inv)
 		hq.heappush(cur_retrieval, (-1 * dist, i))
 		if len(cur_retrieval) > top_n:
 			hq.heappop(cur_retrieval)
@@ -63,6 +63,7 @@ if __name__ == '__main__':
 	lmnn.fit(np.array(desc), labels)
 	print('Finished Metric Learning')
 	M = lmnn.metric()
+	M_inv = linalg.inv(M)
 
 	### multi-process retrieval
 	# all_retrievals[i] = list of sorted retrievals for test img i
@@ -70,7 +71,7 @@ if __name__ == '__main__':
 	top_n = 5
 	
 	with Pool() as pool:
-		ret_res = pool.map(one_retrieval, [ (t_desc, i, desc, top_n, M) for i in range(len(t_desc)) ])
+		ret_res = pool.map(one_retrieval, [ (t_desc, i, desc, top_n, M_inv) for i in range(len(t_desc)) ])
 		for one_res in ret_res:
 			all_retrievals[one_res[0]] = one_res[1]
 
