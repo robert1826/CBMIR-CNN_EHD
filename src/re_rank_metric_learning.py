@@ -45,11 +45,7 @@ def read_EHD():
 
 
 def one_retrieval(my_args):
-	ehd = my_args[0]
-	test_name = my_args[1]
-	names = my_args[2]
-	top_n = my_args[3]
-	M_inv = my_args[4]
+	ehd, test_name, names, top_n, M_inv = my_args
 
 	# cur_retrieval = sorted(range(len(desc)), key=lambda x: distance(t_desc[test_ind], desc[x], M))
 	cur_retrieval = []
