@@ -60,7 +60,7 @@ def one_retrieval(my_args):
 
 	print('Test img #', test_name, 'done')
 	# return (test_ind, cur_retrieval[:top_n])
-	return (i, [u[1] for u in cur_retrieval])
+	return (test_name, [u[1] for u in cur_retrieval])
 
 if __name__ == '__main__':
 	# name : 1000.png, result : ../IRMA/../../../1000.png
