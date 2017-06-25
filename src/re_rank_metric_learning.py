@@ -45,19 +45,22 @@ def read_EHD():
 
 
 def one_retrieval(my_args):
-	ehd, test_name, names, top_n, M_inv = my_args
+	ehd, test_name, t_desc, i, names, desc, top_n, M_inv = my_args
 
 	# cur_retrieval = sorted(range(len(desc)), key=lambda x: distance(t_desc[test_ind], desc[x], M))
 	cur_retrieval = []
-	for name in names:
-		dist = distance(ehd[get_basename(test_name)], ehd[get_basename(name)], M_inv)
-		hq.heappush(cur_retrieval, (-1 * dist, name))
+	full_t_desc = np.concatenate([ehd[get_basename(test_name)], t_desc[i]])
+	for j in range(len(names)):
+		full_desc = np.concatenate([ehd[get_basename(names[j])], desc[j]])
+		
+		dist = distance(full_t_desc, full_desc, M_inv)
+		hq.heappush(cur_retrieval, (-1 * dist, names[j]))
 		if len(cur_retrieval) > top_n:
 			hq.heappop(cur_retrieval)
 
 	print('Test img #', test_name, 'done')
 	# return (test_ind, cur_retrieval[:top_n])
-	return (test_name, [u[1] for u in cur_retrieval])
+	return (i, [u[1] for u in cur_retrieval])
 
 if __name__ == '__main__':
 	# name : 1000.png, result : ../IRMA/../../../1000.png
@@ -65,9 +68,12 @@ if __name__ == '__main__':
 	t_desc, t_labels,t_names = load_descriptor('test_dataset.txt_desc')
 
 	ehd = read_EHD()
-	X = [ ehd[get_basename(u)] for u in names ] 
+	X = [ ehd[get_basename(u)] for u in names ]
+	X = [ np.concatenate([ X[i], desc[i] ]) for i in range(len(desc)) ]
 	X = np.array(X)
 	
+
+
 	lmnn = LMNN(max_iter=1)
 	print('Begin Metric Learning...')
 	lmnn.fit(X, labels)
@@ -81,7 +87,7 @@ if __name__ == '__main__':
 	top_n = 5
 	
 	with Pool() as pool:
-		ret_res = pool.map(one_retrieval, [ (ehd, t_names[i], names, top_n, M_inv) for i in range(len(t_desc)) ])
+		ret_res = pool.map(one_retrieval, [ (ehd, t_names[i], t_desc, i, names, desc, top_n, M_inv) for i in range(len(t_desc)) ])
 		for one_res in ret_res:
 			all_retrievals[one_res[0]] = one_res[1]
 
