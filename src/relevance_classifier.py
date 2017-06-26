@@ -28,7 +28,9 @@ def train_MLPClassifier(desc, labels):
 	for i in range(len(training_desc)):
 		for j in range(i + 1, len(training_desc)):
 			X += [training_desc[i] + training_desc[j]]
-			Y += [training_labels[i] == training_labels[j]]
+			X += [training_desc[j] + training_desc[i]]
+
+			Y += [training_labels[i] == training_labels[j]] * 2
 	print('#training pairs', len(Y))
 	
 	classifier = MLPClassifier()
