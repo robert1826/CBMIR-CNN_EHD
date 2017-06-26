@@ -31,6 +31,14 @@ def train_MLPClassifier(desc, labels):
 	classifier.fit(X, Y)
 	return classifier
 
+def retrieve(t_desc, t, desc, classifier):
+	potentials = []
+	for i in range(len(desc)):
+		prediction = classifier.predict([t_desc[t] + desc[i]])
+		if prediction[0]:
+			potentials += [i]
+	return potentials
+
 if __name__ == '__main__':
 	# Data loading and preprocessing
 	desc, labels, names = load_descriptor('train_dataset.txt_desc')
@@ -38,17 +46,15 @@ if __name__ == '__main__':
 
 	classifier = train_MLPClassifier(desc, labels)
 
-	correct = 0
-	tot = 0
-	for i in range(len(t_labels)):
-	       for j in range(i + 1, len(t_labels)):
-	               prediction = classifier.predict([t_desc[i] + t_desc[j]])
-	               true_prediction = t_labels[i] == t_labels[j]
-	
-	               if prediction[0] == true_prediction:
-	                       correct += 1
-	               tot += 1
-	print('Accuracy', correct / tot)
+	eval_res = []
+	top_n = 5
+	for t in range(len(t_desc)):
+		retrievals = retrieve(t_desc, t, desc, classifier)
+		if len(retrievals) == 0:
+			print('#', t, 'PASS')
+			continue
+		correct = sum([1 for ret in retrievals if labels[ret] == t_labels[t]])
+		print('#', t, correct / len(retrievals))
 
-
-
+		eval_res += [min(correct, top_n) / top_n]
+	print('Top-{} Accuracy is {}'.format(top_n, sum(eval_res) / len(eval_res)))
