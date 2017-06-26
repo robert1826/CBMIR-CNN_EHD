@@ -84,10 +84,12 @@ def test_classifier_acc(t_desc, t_labels, desc, labels, classifier):
 		precision = tp / (tp + fp)
 		recall = tp / (tp + fn)
 		f1 = 2 * precision * recall / (precision + recall)
+		f2 = 5 * precision * recall / (4 * precision + recall)
 		print('Classifier Accuracy', acc)
 		print('Classifier Precision',precision)
 		print('Classifier Recall', recall)
 		print('Classifier F1 Score', f1)
+		print('Classifier F2 Score', f2)
 
 def __test_classifier_acc(myargs):
 	t, t_desc, t_labels, desc, labels, classifier = myargs
