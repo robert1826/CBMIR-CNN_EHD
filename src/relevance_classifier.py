@@ -4,6 +4,7 @@ from multiprocessing import Pool
 import sys
 from sklearn.externals import joblib
 from random import shuffle
+import re
 
 
 def load_descriptor(name):
@@ -15,6 +16,24 @@ def load_descriptor(name):
 		del save
 
 	return desc, labels, names
+
+def get_basename(s):
+	 num = re.search('(\d+)(?=(\.png|\.jpg))', s).group(1)
+	 return num
+
+def get_file_name(s):
+	num = re.search('(\d+)(?=(\.png|\.jpg))', s).group(1)
+	return num + '.png'
+
+def read_EHD():
+	ehd = {}
+	with open('ehd_out.txt', 'r') as f:
+		for curLine in f.readlines():
+			filename = curLine.strip().split(' ')[0]
+			filename = get_file_name(filename)
+			filename = get_basename(filename)
+			ehd[filename] = list(map(int, curLine.split(' ')[1:]))
+	return ehd
 
 def train_MLPClassifier(desc, labels):
 	# pick 10 samples from each class
@@ -118,12 +137,14 @@ if __name__ == '__main__':
 	# load data
 	desc, labels, names = load_descriptor('train_dataset.txt_desc')
 	t_desc, t_labels,t_names = load_descriptor('test_dataset.txt_desc')
+	ehd = read_EHD()
 	
 	if len(sys.argv) < 2:
 		print('Wrong args, Please enter train or eval')
 
 	elif sys.argv[1] == 'train':
-		classifier = train_MLPClassifier(desc, labels)
+		# classifier = train_MLPClassifier(desc, labels)
+		classifier = train_MLPClassifier([ehd[get_basename(u)] for u in names], labels)
 		joblib.dump(classifier, 'clf.pkl') 
 
 	elif sys.argv[1] == 'eval':
