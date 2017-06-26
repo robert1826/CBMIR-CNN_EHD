@@ -149,7 +149,8 @@ if __name__ == '__main__':
 
 	elif sys.argv[1] == 'eval':
 		classifier = joblib.load('clf.pkl')
-		args = (t_desc, t_labels, desc, labels, classifier)
+		# args = (t_desc, t_labels, desc, labels, classifier)
+		args = ([ehd[get_basename(u)] for u in t_names], t_labels, [ehd[get_basename(u)] for u in names], labels, classifier)
 		# test_retrieval(*args)
 		test_classifier_acc(*args)
 
