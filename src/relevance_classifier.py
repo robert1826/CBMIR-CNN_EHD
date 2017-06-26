@@ -31,7 +31,7 @@ def train_MLPClassifier(desc, labels):
 			Y += [training_labels[i] == training_labels[j]]
 	print('#training pairs', len(Y))
 	
-	classifier = MLPClassifier(alpha=1)
+	classifier = MLPClassifier()
 	classifier.fit(X, Y)
 	return classifier
 
