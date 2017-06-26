@@ -71,7 +71,7 @@ def test_classifier_acc(t_desc, t_labels, desc, labels, classifier):
 		all_correct = pool.map(__test_classifier_acc, [ (t, t_desc, t_labels, desc, labels, classifier) for t in range(len(t_desc))])
 		tot = len(t_desc) * len(desc)
 
-		print('Classifier Accuracy', correct / tot)
+		print('Classifier Accuracy', all_correct / tot)
 
 def __test_classifier_acc(myargs):
 	t, t_desc, t_labels, desc, labels, classifier = myargs
