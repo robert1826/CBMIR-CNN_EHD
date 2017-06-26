@@ -46,6 +46,45 @@ def retrieve(myargs):
 	print('Test Image #{} Done'.format(t))
 	return potentials
 
+def test_retrieval(t_desc, t_labels, desc, labels, classifier):
+	eval_res = []
+	top_n = 5
+	with Pool() as pool:
+		print('Begin Multiprocess Retrieval')
+		all_retrievals = pool.map(retrieve, [(t_desc, t, desc, classifier) for t in range(len(t_desc))])
+
+		print('Begin Evaluation')
+		for t in range(len(all_retrievals)):
+			retrievals = all_retrievals[t]
+
+			if len(retrievals) == 0:
+				print('#', t, 'PASS')
+				continue
+			correct = sum([1 for ret in retrievals if labels[ret] == t_labels[t]])
+			print('#', t, 'precision', correct / len(retrievals), 'recall', correct / [1 for u in range(len(labels)) if labels[u] == t_labels[t]])
+
+			eval_res += [min(correct, top_n) / top_n]
+	print('Top-{} Accuracy is {}'.format(top_n, sum(eval_res) / len(eval_res)))
+
+def test_classifier_acc(t_desc, t_labels, desc, labels, classifier):
+	with Pool() as pool:
+		all_correct = pool.map(__test_classifier_acc, [ (t, t_desc, t_labels, desc, labels, classifier) for t in range(len(t_desc))])
+		tot = len(t_desc) * len(desc)
+
+		print('Classifier Accuracy', correct / tot)
+
+def __test_classifier_acc(myargs):
+	t, t_desc, t_labels, desc, labels, classifier = myargs
+
+	correct = 0
+	for i in range(len(desc)):
+		prediction = classifier.predict([t_desc[t] + desc[i]])
+		true_prediction = t_labels[t] == labels[i]
+		if prediction[0] == true_prediction:
+			correct += 1
+	print('Test Image #{} done'.format(t))
+	return correct
+
 if __name__ == '__main__':
 	# load data
 	desc, labels, names = load_descriptor('train_dataset.txt_desc')
@@ -60,24 +99,9 @@ if __name__ == '__main__':
 
 	elif sys.argv[1] == 'eval':
 		classifier = joblib.load('clf.pkl')
-		eval_res = []
-		top_n = 5
-		with Pool() as pool:
-			print('Begin Multiprocess Retrieval')
-			all_retrievals = pool.map(retrieve, [(t_desc, t, desc, classifier) for t in range(len(t_desc))])
-
-			print('Begin Evaluation')
-			for t in range(len(all_retrievals)):
-				retrievals = all_retrievals[t]
-
-				if len(retrievals) == 0:
-					print('#', t, 'PASS')
-					continue
-				correct = sum([1 for ret in retrievals if labels[ret] == t_labels[t]])
-				print('#', t, 'precision', correct / len(retrievals), 'recall', correct / [1 for u in range(len(labels)) if labels[u] == t_labels[t]])
-
-				eval_res += [min(correct, top_n) / top_n]
-		print('Top-{} Accuracy is {}'.format(top_n, sum(eval_res) / len(eval_res)))
+		args = (t_desc, t_labels, desc, labels, classifier)
+		# test_retrieval(*args)
+		test_classifier_acc(*args)
 
 	else:
 		print('Wrong args, Please enter train or eval')
