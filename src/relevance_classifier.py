@@ -68,22 +68,40 @@ def test_retrieval(t_desc, t_labels, desc, labels, classifier):
 
 def test_classifier_acc(t_desc, t_labels, desc, labels, classifier):
 	with Pool() as pool:
-		all_correct = pool.map(__test_classifier_acc, [ (t, t_desc, t_labels, desc, labels, classifier) for t in range(len(t_desc))])
-		tot = len(t_desc) * len(desc)
-
-		print('Classifier Accuracy', sum(all_correct) / tot)
+		measures = pool.map(__test_classifier_acc, [ (t, t_desc, t_labels, desc, labels, classifier) for t in range(len(t_desc))])
+		
+		tp = sum([u[0] for u in measures]) / len(measures)
+		fp = sum([u[1] for u in measures]) / len(measures)
+		tn = sum([u[2] for u in measures]) / len(measures)
+		fn = sum([u[3] for u in measures]) / len(measures)
+		
+		print()
+		print('Classifier Accuracy', (tp + tn) / (tp + tn + fp + fn))
+		print('Classifier Precision', tp / (tp + fp))
+		print('Classifier Recall', tp / (tp + fn))
 
 def __test_classifier_acc(myargs):
 	t, t_desc, t_labels, desc, labels, classifier = myargs
 
-	correct = 0
+	tp, fp, tn, fn = 0, 0, 0, 0
+
 	for i in range(len(desc)):
 		prediction = classifier.predict([t_desc[t] + desc[i]])
 		true_prediction = t_labels[t] == labels[i]
-		if prediction[0] == true_prediction:
-			correct += 1
+		
+		if prediction:
+			if true_prediction:
+				tp += 1
+			else:
+				fp += 1
+		else:
+			if not true_prediction:
+				tn += 1
+			else:
+				fn += 1
+
 	print('Test Image #{} done'.format(t))
-	return correct
+	return (tp, fp, tn, fn)
 
 if __name__ == '__main__':
 	# load data
