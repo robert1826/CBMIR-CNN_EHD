@@ -1,6 +1,9 @@
 from six.moves import cPickle as pickle
 from sklearn.neural_network import MLPClassifier
 from multiprocessing import Pool
+import sys
+from sklearn.externals import joblib
+
 
 def load_descriptor(name):
 	with open(name, 'rb') as f:
@@ -44,27 +47,39 @@ def retrieve(myargs):
 	return potentials
 
 if __name__ == '__main__':
-	# Data loading and preprocessing
+	# load data
 	desc, labels, names = load_descriptor('train_dataset.txt_desc')
 	t_desc, t_labels,t_names = load_descriptor('test_dataset.txt_desc')
+	
+	if len(sys.argv) < 2:
+		print('Wrong args, Please enter train or eval')
 
-	classifier = train_MLPClassifier(desc, labels)
+	elif sys.argv[1] == 'train':
+		classifier = train_MLPClassifier(desc, labels)
+		joblib.dump(classifier, 'clf.pkl') 
 
-	eval_res = []
-	top_n = 5
-	with Pool() as pool:
-		print('Begin Multiprocess Retrieval')
-		all_retrievals = pool.map(retrieve, [(t_desc, t, desc, classifier) for t in range(len(t_desc))])
+	elif sys.argv[1] == 'eval':
+		classifier = joblib.load('clf.pkl')
+		eval_res = []
+		top_n = 5
+		with Pool() as pool:
+			print('Begin Multiprocess Retrieval')
+			all_retrievals = pool.map(retrieve, [(t_desc, t, desc, classifier) for t in range(len(t_desc))])
 
-		print('Begin Evaluation')
-		for t in range(len(all_retrievals)):
-			retrievals = all_retrievals[t]
-			
-			if len(retrievals) == 0:
-				print('#', t, 'PASS')
-				continue
-			correct = sum([1 for ret in retrievals if labels[ret] == t_labels[t]])
-			print('#', t, correct / len(retrievals))
+			print('Begin Evaluation')
+			for t in range(len(all_retrievals)):
+				retrievals = all_retrievals[t]
 
-			eval_res += [min(correct, top_n) / top_n]
-	print('Top-{} Accuracy is {}'.format(top_n, sum(eval_res) / len(eval_res)))
+				if len(retrievals) == 0:
+					print('#', t, 'PASS')
+					continue
+				correct = sum([1 for ret in retrievals if labels[ret] == t_labels[t]])
+				print('#', t, 'precision', correct / len(retrievals), 'recall', correct / [1 for u in range(len(labels)) if labels[u] == t_labels[t]])
+
+				eval_res += [min(correct, top_n) / top_n]
+		print('Top-{} Accuracy is {}'.format(top_n, sum(eval_res) / len(eval_res)))
+
+	else:
+		print('Wrong args, Please enter train or eval')
+
+
