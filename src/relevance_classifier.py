@@ -1,5 +1,6 @@
 from six.moves import cPickle as pickle
 from sklearn.neural_network import MLPClassifier
+from multiprocessing import Pool
 
 def load_descriptor(name):
 	with open(name, 'rb') as f:
@@ -31,12 +32,15 @@ def train_MLPClassifier(desc, labels):
 	classifier.fit(X, Y)
 	return classifier
 
-def retrieve(t_desc, t, desc, classifier):
+def retrieve(myargs):
+	t_desc, t, desc, classifier = myargs
+
 	potentials = []
 	for i in range(len(desc)):
 		prediction = classifier.predict([t_desc[t] + desc[i]])
 		if prediction[0]:
 			potentials += [i]
+	print('Test Image #{} Done'.format(t))
 	return potentials
 
 if __name__ == '__main__':
@@ -48,13 +52,19 @@ if __name__ == '__main__':
 
 	eval_res = []
 	top_n = 5
-	for t in range(len(t_desc)):
-		retrievals = retrieve(t_desc, t, desc, classifier)
-		if len(retrievals) == 0:
-			print('#', t, 'PASS')
-			continue
-		correct = sum([1 for ret in retrievals if labels[ret] == t_labels[t]])
-		print('#', t, correct / len(retrievals))
+	with Pool() as pool:
+		print('Begin Multiprocess Retrieval')
+		all_retrievals = pool.map(retrieve, [(t_desc, t, desc, classifier) for t in range(len(t_desc))])
 
-		eval_res += [min(correct, top_n) / top_n]
+		print('Begin Evaluation')
+		for t in range(len(all_retrievals)):
+			retrievals = all_retrievals[t]
+			
+			if len(retrievals) == 0:
+				print('#', t, 'PASS')
+				continue
+			correct = sum([1 for ret in retrievals if labels[ret] == t_labels[t]])
+			print('#', t, correct / len(retrievals))
+
+			eval_res += [min(correct, top_n) / top_n]
 	print('Top-{} Accuracy is {}'.format(top_n, sum(eval_res) / len(eval_res)))
