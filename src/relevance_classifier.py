@@ -3,6 +3,7 @@ from sklearn.neural_network import MLPClassifier
 from multiprocessing import Pool
 import sys
 from sklearn.externals import joblib
+from random import shuffle
 
 
 def load_descriptor(name):
@@ -20,7 +21,7 @@ def train_MLPClassifier(desc, labels):
 	chosen = []
 	for label in set(labels):
 		chosen += [i for i in range(len(labels)) if labels[i] == label][:10]
-	
+	shuffle(chosen)
 	training_desc = [desc[i] for i in chosen]
 	training_labels = [labels[i] for i in chosen]
 	
