@@ -80,9 +80,14 @@ def test_classifier_acc(t_desc, t_labels, desc, labels, classifier):
 		fn = sum([u[3] for u in measures]) / len(measures)
 		
 		print()
-		print('Classifier Accuracy', (tp + tn) / (tp + tn + fp + fn))
-		print('Classifier Precision', tp / (tp + fp))
-		print('Classifier Recall', tp / (tp + fn))
+		acc = (tp + tn) / (tp + tn + fp + fn)
+		precision = tp / (tp + fp)
+		recall = tp / (tp + fn)
+		f1 = 2 * precision * recall / (precision + recall)
+		print('Classifier Accuracy', acc)
+		print('Classifier Precision',precision)
+		print('Classifier Recall', recall)
+		print('Classifier F1 Score', f1)
 
 def __test_classifier_acc(myargs):
 	t, t_desc, t_labels, desc, labels, classifier = myargs
