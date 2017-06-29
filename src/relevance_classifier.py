@@ -44,11 +44,14 @@ def train_MLPClassifier(desc, labels):
 def retrieve(myargs):
 	t_desc, t, desc, classifier = myargs
 
-	potentials = []
-	for i in range(len(desc)):
-		prediction = classifier.predict([t_desc[t] + desc[i]])
-		if prediction[0]:
-			potentials += [i]
+	x_test = [t_desc[t] + desc[i] for i in range(len(desc))]
+	prediction = classifier.predict(x_test)
+	potentials = [i for i in range(len(prediction)) if prediction[i]]
+
+	# for i in range(len(desc)):
+		# prediction = classifier.predict([t_desc[t] + desc[i]])
+		# if prediction[0]:
+			# potentials += [i]
 	print('Test Image #{} Done'.format(t))
 	return potentials
 
