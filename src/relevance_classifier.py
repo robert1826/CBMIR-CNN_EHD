@@ -119,8 +119,15 @@ if __name__ == '__main__':
 	elif sys.argv[1] == 'eval':
 		classifier = joblib.load('clf.pkl')
 		args = (t_desc, t_labels, desc, labels, classifier)
-		# test_retrieval(*args)
-		test_classifier_acc(*args)
+		
+		if len(sys.argv) < 3:
+			print('Wrong args, Please enter eval class or eval ret')
+		elif sys.argv[2] == 'class':
+			test_classifier_acc(*args)
+		elif sys.argv[2] == 'ret':
+			test_retrieval(*args)
+		else:
+			print('Wrong args, Please enter eval class or eval ret')
 
 	else:
 		print('Wrong args, Please enter train or eval')
