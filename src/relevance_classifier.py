@@ -71,7 +71,7 @@ def test_retrieval(t_desc, t_labels, desc, labels, classifier):
 			# 	eval_res += [0]
 			# 	continue
 			correct = sum([1 for ret in retrievals if labels[ret] == t_labels[t]])
-			print('#', t, 'precision', correct / max(len(retrievals), 0.1), 'recall', correct / sum([1 for u in range(len(labels)) if labels[u] == t_labels[t]]))
+			print('#', t, 'precision', correct / max(len(retrievals), 10 ** 10), 'recall', correct / sum([1 for u in range(len(labels)) if labels[u] == t_labels[t]]))
 
 			eval_res += [min(correct, top_n) / top_n]
 	print('Top-{} Accuracy is {}'.format(top_n, sum(eval_res) / len(eval_res)))
