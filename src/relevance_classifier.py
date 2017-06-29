@@ -1,5 +1,6 @@
 from six.moves import cPickle as pickle
 from sklearn.neural_network import MLPClassifier
+from sklearn.model_selection import GridSearchCV
 from multiprocessing import Pool
 import sys
 from sklearn.externals import joblib
@@ -37,7 +38,14 @@ def train_MLPClassifier(desc, labels):
 			Y += [training_labels[i] == training_labels[j]] * 2
 	print('#training pairs', len(Y))
 	
+	params = {
+		'hidden_layer_sizes': [(100,), (150,), (50,), (70,)], 
+		'activation' : ['identity', 'logistic', 'tanh', 'relu'], 
+		'solver' : ['lbfgs', 'sgd', 'adam'], 
+		'learning_rate' : ['constant', 'invscaling', 'adaptive']
+	}
 	classifier = MLPClassifier(verbose=True)
+	# classifier = GridSearchCV(classifier, params)
 	classifier.fit(X, Y)
 	return classifier
 
