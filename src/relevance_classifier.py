@@ -4,6 +4,9 @@ from multiprocessing import Pool
 import sys
 from sklearn.externals import joblib
 from random import shuffle
+from sklearn.metrics import classification_report
+from itertools import product
+	
 
 
 def load_descriptor(name):
@@ -71,48 +74,32 @@ def test_retrieval(t_desc, t_labels, desc, labels, classifier):
 	print('Top-{} Accuracy is {}'.format(top_n, sum(eval_res) / len(eval_res)))
 
 def test_classifier_acc(t_desc, t_labels, desc, labels, classifier):
-	with Pool() as pool:
-		measures = pool.map(__test_classifier_acc, [ (t, t_desc, t_labels, desc, labels, classifier) for t in range(len(t_desc))])
+	y_true = []
+	y_pred = []
+	
+	batch_size = 2 * 10 ** 6
+	my_iter = product(range(len(t_desc)), range(len(desc)))
+	ind = 0
+
+	samples_remain = True
+	while samples_remain:
+		print('>>> #', ind, 'from', len(t_desc) * len(desc), '%', ind * 100 / len(t_desc) / len(desc))
+		batch = []
+		for _ in range(batch_size):
+			try:
+				batch += [next(my_iter)]
+				ind += 1
+			except StopIteration:
+				samples_remain = False
+				break
 		
-		tp = sum([u[0] for u in measures]) / len(measures)
-		fp = sum([u[1] for u in measures]) / len(measures)
-		tn = sum([u[2] for u in measures]) / len(measures)
-		fn = sum([u[3] for u in measures]) / len(measures)
-		
-		print()
-		acc = (tp + tn) / (tp + tn + fp + fn)
-		precision = tp / (tp + fp)
-		recall = tp / (tp + fn)
-		f1 = 2 * precision * recall / (precision + recall)
-		f2 = 5 * precision * recall / (4 * precision + recall)
-		print('Classifier Accuracy', acc)
-		print('Classifier Precision',precision)
-		print('Classifier Recall', recall)
-		print('Classifier F1 Score', f1)
-		print('Classifier F2 Score', f2)
+		x_test = [t_desc[i[0]] + desc[i[1]] for i in batch]
+		y_true += [t_labels[i[0]] == labels[i[1]] for i in batch]
+		y_pred += list(classifier.predict(x_test))
 
-def __test_classifier_acc(myargs):
-	t, t_desc, t_labels, desc, labels, classifier = myargs
+	print('generating class. report')
+	print(classification_report(y_true, y_pred))
 
-	tp, fp, tn, fn = 0, 0, 0, 0
-
-	for i in range(len(desc)):
-		prediction = classifier.predict([t_desc[t] + desc[i]])
-		true_prediction = t_labels[t] == labels[i]
-		
-		if prediction:
-			if true_prediction:
-				tp += 1
-			else:
-				fp += 1
-		else:
-			if not true_prediction:
-				tn += 1
-			else:
-				fn += 1
-
-	print('Test Image #{} done'.format(t))
-	return (tp, fp, tn, fn)
 
 if __name__ == '__main__':
 	# load data
