@@ -7,13 +7,13 @@ mv ../data_files/*.pickle .
 echo 'done'
 echo ''
 
-echo 'Generating dataset lists'
-find -L .. -path "*IRMA*train*png" > ./tmp_train.txt
-find -L .. -path "*IRMA*test*png" > ./tmp_test.txt
-head tmp_train.txt -n 100 > train_dataset.txt
-head tmp_test.txt -n 5 > test_dataset.txt
-echo 'done'
-echo ''
+# echo 'Generating dataset lists'
+# find -L .. -path "*IRMA*train*png" > ./tmp_train.txt
+# find -L .. -path "*IRMA*test*png" > ./tmp_test.txt
+# head tmp_train.txt -n 100 > train_dataset.txt
+# head tmp_test.txt -n 5 > test_dataset.txt
+# echo 'done'
+# echo ''
 
 echo 'Generating descriptors files'
 optirun python myalexnet_forward.py ./ train_dataset.txt train_codes_02.csv_labels.pickle
