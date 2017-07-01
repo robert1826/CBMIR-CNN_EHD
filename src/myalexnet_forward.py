@@ -218,13 +218,13 @@ if __name__ == '__main__':
 	desc8 = []
 	desc7 = []
 	with tf.Session(graph=graph) as session:
-		# tf.global_variables_initializer().run()
-		# print('Initialized')
+		tf.global_variables_initializer().run()
+		print('Initialized')
 
 		# load saved model
-		saver = tf.train.Saver()
-		saver.restore(session, "model/model_drop_2layers130.ckpt")
-		print("Model Loaded")
+		# saver = tf.train.Saver()
+		# saver.restore(session, "model/model_drop_2layers130.ckpt")
+		# print("Model Loaded")
 
 		# Generate Descriptors
 		index = 0
