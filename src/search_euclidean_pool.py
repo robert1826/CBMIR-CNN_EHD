@@ -18,7 +18,7 @@ labels_sum = {}
 def load_data(name):
 	with open(name, 'rb') as f:
 		save = pickle.load(f)
-		desc = save['desc']
+		desc = save['desc7']
 		labels = save['labels']
 		names = save['name']
 		print(len(desc))
