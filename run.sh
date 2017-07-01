@@ -16,8 +16,8 @@ echo ''
 # echo ''
 
 echo 'Generating descriptors files'
-optirun python myalexnet_forward.py ./ train_dataset.txt train_codes_02.csv_labels.pickle
-optirun python myalexnet_forward.py ./ test_dataset.txt test_codes_03.csv_labels.pickle
+optirun python myalexnet_forward.py ../IRMA/ train_dataset.txt train_codes_02.csv_labels.pickle
+optirun python myalexnet_forward.py ../IRMA/ test_dataset.txt test_codes_03.csv_labels.pickle
 echo 'done'
 echo ''
 
