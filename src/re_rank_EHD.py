@@ -43,9 +43,9 @@ def get_file_name(s):
 	return num + '.png'
 
 def distance(a,b):
-	return dis.braycurtis(a, b)  # 61.2
+	# return dis.braycurtis(a, b)  # 61.2
 	# return dis.cosine(a, b) # 61
-	# return dis.euclidean(a, b) # 60.9
+	return dis.euclidean(a, b) # 60.9
 	# return dis.correlation(a, b) # 60.7
 	# return dis.cityblock(a, b) # 60.4
 	# return dis.canberra(a, b) # 59.5
