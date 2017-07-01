@@ -62,8 +62,8 @@ echo ''
 
 rm tmp*.txt
 mkdir ../generated_files
-mv train* ../generated_files -f
-mv test* ../generated_files -f
+# mv train* ../generated_files -f
+# mv test* ../generated_files -f
 mv Retrieval ../generated_files -f
 mv retrieval_result_fc7 ../generated_files -f
 
