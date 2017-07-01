@@ -90,7 +90,7 @@ if __name__ == '__main__':
 	top_n = 5
 	for i in indexQ:
 		relevance_score = {}
-		indexR[i] = indexR[i][-25:]
+		indexR[i] = indexR[i][-20:]
 		for j in indexR[i]:
 			relevance_score[ labels[j] ] = 0
 		
